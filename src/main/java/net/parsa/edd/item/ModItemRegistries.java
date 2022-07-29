@@ -13,7 +13,7 @@ public class ModItemRegistries {
             DeferredRegister.create(ForgeRegistries.ITEMS, EnhancedDeepDark.MODID);
 
     public static final RegistryObject<Item> SCULK_REMOVER = ITEMS.register("sculk_remover",
-            () -> new SculkRemover(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
+            () -> new SculkRemover(new Item.Properties().tab(ModItemGroups.EDD_TAB)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

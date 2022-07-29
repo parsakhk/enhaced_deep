@@ -2,6 +2,8 @@ package net.parsa.edd;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.parsa.edd.block.ModBlockRegistries;
 import net.parsa.edd.item.ModItemRegistries;
 import org.slf4j.Logger;
 
@@ -37,9 +40,12 @@ public class EnhancedDeepDark
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the commonSetup method for modloading
+        modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::commonSetup);
 
+
         ModItemRegistries.register(modEventBus);
+        ModBlockRegistries.register(modEventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -51,14 +57,15 @@ public class EnhancedDeepDark
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
-    }
+    private void clientSetup(final FMLClientSetupEvent event) {
 
+
+        ItemBlockRenderTypes.setRenderLayer(ModBlockRegistries.SCULK_MUSHROOM.get(), RenderType.cutout());
+
+
+
+
+    }
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
