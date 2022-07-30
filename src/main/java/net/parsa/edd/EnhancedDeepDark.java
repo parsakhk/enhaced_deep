@@ -24,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.parsa.edd.block.ModBlockRegistries;
 import net.parsa.edd.item.ModItemRegistries;
-import net.parsa.edd.particle.ModParticlesRegisties;
+import net.parsa.edd.particle.ModParticles;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -44,9 +44,9 @@ public class EnhancedDeepDark
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::commonSetup);
 
-        ModParticlesRegisties.register(modEventBus);
         ModItemRegistries.register(modEventBus);
         ModBlockRegistries.register(modEventBus);
+        ModParticles.register(modEventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
