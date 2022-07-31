@@ -14,7 +14,7 @@ public class BlockEntitesRegistry {
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, EnhancedDeepDark.MODID);
 
     public static final RegistryObject<BlockEntityType<SculkyGrowerBlockEntity>> SCULKY_GROWER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("gem_cutting_station_block_entity", () ->
+            BLOCK_ENTITIES.register("sculk_grower_block_entity", () ->
                     BlockEntityType.Builder.of(SculkyGrowerBlockEntity::new,
                             ModBlockRegistries.SCULK_GROWER.get()).build(null));
 
