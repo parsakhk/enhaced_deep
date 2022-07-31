@@ -13,6 +13,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.parsa.edd.EnhancedDeepDark;
+import net.parsa.edd.block.custom.SculkyGrower;
 import net.parsa.edd.item.ModItemGroups;
 import net.parsa.edd.item.ModItemRegistries;
 import net.parsa.edd.item.SculkRemover;
@@ -24,6 +25,8 @@ public class ModBlockRegistries {
             DeferredRegister.create(ForgeRegistries.BLOCKS, EnhancedDeepDark.MODID);
 
     public static final RegistryObject<Block> SCULK_MUSHROOM = registerBlock("sculk_mushroom", () -> new FlowerBlock(MobEffects.DARKNESS, 3, BlockBehaviour.Properties.copy(Blocks.DANDELION).noOcclusion().noCollission()), ModItemGroups.EDD_TAB);
+    public static final RegistryObject<Block> SCULK_GROWER = registerBlock("sculk_grower", () -> new SculkyGrower(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)), ModItemGroups.EDD_TAB);
+
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

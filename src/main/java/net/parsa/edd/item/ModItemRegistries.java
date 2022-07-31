@@ -15,6 +15,10 @@ public class ModItemRegistries {
     public static final RegistryObject<Item> SCULK_REMOVER = ITEMS.register("sculk_remover",
             () -> new SculkRemover(new Item.Properties().tab(ModItemGroups.EDD_TAB)));
 
+    
+    public static final RegistryObject<Item> SCULK_SOUP = ITEMS.register("sculk_soup",
+            () -> new Item(new Item.Properties().tab(ModItemGroups.EDD_TAB).food(ModFoodRegistries.SCULK_SOUP)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

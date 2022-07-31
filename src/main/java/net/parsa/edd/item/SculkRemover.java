@@ -41,7 +41,7 @@ public class SculkRemover extends Item {
             player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 1, 60));
         } else if(blocksValid(posClicked)) {
             p_41427_.getLevel().destroyBlock(p_41427_.getClickedPos(), false);
-            spawnSculkParticles(p_41427_, posClicked);
+            spawnFoundParticles(p_41427_);
         }
     }
 
@@ -50,12 +50,15 @@ public class SculkRemover extends Item {
                 || posClicked.getBlock() == Blocks.SCULK_CATALYST || posClicked.getBlock() == Blocks.SCULK_SHRIEKER;
     }
 
-    private void spawnSculkParticles(UseOnContext pContext, BlockState positionClicked) {
-        for(int i =0; i<180; i++) {
-            if(i % 30 == 0) {
+    private void spawnFoundParticles(UseOnContext pContext) {
+
+        BlockPos positionClicked = pContext.getClickedPos();
+
+        for(int i = 0; i < 360; i++) {
+            if(i % 20 == 0) {
                 pContext.getLevel().addParticle(ModParticles.SCULK_PRISONERS.get(),
-                        pContext.getClickedPos().getX() + 1d, pContext.getClickedPos().getY() + 2d, pContext.getClickedPos().getZ() + 0.5d,
-                        Math.cos(i) *0.25d, 0.15d, 0.45d);
+                        positionClicked.getX() + 0.5d, positionClicked.getY() + 1, positionClicked.getZ() + 0.5d,
+                        Math.cos(i) * 0.15d, 0.15d, Math.sin(i) * 0.15d);
             }
         }
     }

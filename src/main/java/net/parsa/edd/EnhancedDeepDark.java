@@ -2,6 +2,7 @@ package net.parsa.edd;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.BlockItem;
@@ -23,8 +24,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.parsa.edd.block.ModBlockRegistries;
+import net.parsa.edd.block.entity.BlockEntitesRegistry;
 import net.parsa.edd.item.ModItemRegistries;
 import net.parsa.edd.particle.ModParticles;
+import net.parsa.edd.screen.ModMenuTypes;
+import net.parsa.edd.screen.SculkyGrowerScreen;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -47,6 +51,9 @@ public class EnhancedDeepDark
         ModItemRegistries.register(modEventBus);
         ModBlockRegistries.register(modEventBus);
         ModParticles.register(modEventBus);
+
+        ModMenuTypes.register(modEventBus);
+        BlockEntitesRegistry.register(modEventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -64,7 +71,7 @@ public class EnhancedDeepDark
         ItemBlockRenderTypes.setRenderLayer(ModBlockRegistries.SCULK_MUSHROOM.get(), RenderType.cutout());
 
 
-
+        MenuScreens.register(ModMenuTypes.SCULKY_GROWER_MENU.get(), SculkyGrowerScreen::new);
 
     }
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "edd:block/sculk_grower_front",
+    "side": "edd:block/sculk_grower_side"
+  }
+}
