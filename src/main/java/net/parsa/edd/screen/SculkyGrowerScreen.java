@@ -13,7 +13,7 @@ import net.parsa.edd.block.entity.custom.SculkyGrowerBlockEntity;
 
 public class SculkyGrowerScreen extends AbstractContainerScreen<SculkyGrowerMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(EnhancedDeepDark.MODID, "textures/gui/sculky_grower_gui.png");
+            new ResourceLocation(EnhancedDeepDark.MODID, "textures/gui/sculk_grower_gui.png");
 
     public SculkyGrowerScreen(SculkyGrowerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
