@@ -27,6 +27,8 @@ import net.parsa.edd.block.ModBlockRegistries;
 import net.parsa.edd.block.entity.BlockEntitesRegistry;
 import net.parsa.edd.item.ModItemRegistries;
 import net.parsa.edd.particle.ModParticles;
+import net.parsa.edd.recipe.ModRecipe;
+import net.parsa.edd.screen.DeepBoardScreen;
 import net.parsa.edd.screen.ModMenuTypes;
 import net.parsa.edd.screen.SculkyGrowerScreen;
 import org.slf4j.Logger;
@@ -54,6 +56,7 @@ public class EnhancedDeepDark
 
         ModMenuTypes.register(modEventBus);
         BlockEntitesRegistry.register(modEventBus);
+        ModRecipe.register(modEventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -72,6 +75,7 @@ public class EnhancedDeepDark
 
 
         MenuScreens.register(ModMenuTypes.SCULKY_GROWER_MENU.get(), SculkyGrowerScreen::new);
+        MenuScreens.register(ModMenuTypes.DEEP_BOARD_MENU.get(), DeepBoardScreen::new);
 
     }
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

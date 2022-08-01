@@ -23,7 +23,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.parsa.edd.block.entity.BlockEntitesRegistry;
+import net.parsa.edd.recipe.DeepBoardRecipe;
 import net.parsa.edd.recipe.SculkyGrowerRecipe;
+import net.parsa.edd.screen.DeepBoardMenu;
 import net.parsa.edd.screen.SculkyGrowerMenu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,9 +33,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider {
+public class DeepBoardBlockEntity extends BlockEntity implements MenuProvider {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(5) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -45,21 +47,21 @@ public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider
     private int progress = 0;
     private int maxProgress = 242;
 
-    public SculkyGrowerBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(BlockEntitesRegistry.SCULKY_GROWER_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
+    public DeepBoardBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
+        super(BlockEntitesRegistry.DEEP_BOARD_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
         this.data = new ContainerData() {
             public int get(int index) {
                 switch (index) {
-                    case 0: return SculkyGrowerBlockEntity.this.progress;
-                    case 1: return SculkyGrowerBlockEntity.this.maxProgress;
+                    case 0: return DeepBoardBlockEntity.this.progress;
+                    case 1: return DeepBoardBlockEntity.this.maxProgress;
                     default: return 0;
                 }
             }
 
             public void set(int index, int value) {
                 switch(index) {
-                    case 0: SculkyGrowerBlockEntity.this.progress = value; break;
-                    case 1: SculkyGrowerBlockEntity.this.maxProgress = value; break;
+                    case 0: DeepBoardBlockEntity.this.progress = value; break;
+                    case 1: DeepBoardBlockEntity.this.maxProgress = value; break;
                 }
             }
 
@@ -72,13 +74,13 @@ public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Sculky Grower");
+        return Component.literal("Deep Board");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
-        return new SculkyGrowerMenu(pContainerId, pInventory, this, this.data);
+        return new DeepBoardMenu(pContainerId, pInventory, this, this.data);
     }
 
     @Nonnull
@@ -106,7 +108,7 @@ public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("sculky_grower.progress", progress);
+        tag.putInt("deep_board.progress", progress);
         super.saveAdditional(tag);
     }
 
@@ -114,7 +116,7 @@ public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("sculky_grower.progress");
+        progress = nbt.getInt("deep_board.progress");
     }
 
     public void drops() {
@@ -127,7 +129,7 @@ public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider
     }
 
 
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, SculkyGrowerBlockEntity pBlockEntity) {
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DeepBoardBlockEntity pBlockEntity) {
         if(hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);
@@ -140,42 +142,53 @@ public class SculkyGrowerBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
-    private static boolean hasRecipe(SculkyGrowerBlockEntity entity) {
+    private static boolean hasRecipe(DeepBoardBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
 
-        Optional<SculkyGrowerRecipe> match = level.getRecipeManager()
-                .getRecipeFor(SculkyGrowerRecipe.Type.INSTANCE, inventory, level);
+        Optional<DeepBoardRecipe> match = level.getRecipeManager()
+                .getRecipeFor(DeepBoardRecipe.Type.INSTANCE, inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
-                && hasSculkInSculkSlot(entity);
+                && hasBowlInBowlSlot(entity) && hasSwordInSwordSlot(entity)
+                && hasBlockInBlockSlot(entity);
     }
 
-    private static boolean hasSculkInSculkSlot(SculkyGrowerBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(0).getItem() == Blocks.SCULK.asItem();
+    private static boolean hasBowlInBowlSlot(DeepBoardBlockEntity entity) {
+        return entity.itemHandler.getStackInSlot(0).getItem() == Items.BOWL;
+    }
+    private static boolean hasSwordInSwordSlot(DeepBoardBlockEntity entity) {
+        return entity.itemHandler.getStackInSlot(1).getItem() == Items.DIAMOND_SWORD ||
+                entity.itemHandler.getStackInSlot(1).getItem() == Items.GOLDEN_SWORD || entity.itemHandler.getStackInSlot(0).getItem() == Items.NETHERITE_SWORD ||
+                entity.itemHandler.getStackInSlot(1).getItem() == Items.IRON_SWORD;
     }
 
+    private static boolean hasBlockInBlockSlot(DeepBoardBlockEntity entity) {
+        return entity.itemHandler.getStackInSlot(2).getItem() == Blocks.SCULK.asItem();
+    }
 
-    private static void craftItem(SculkyGrowerBlockEntity entity) {
+    private static void craftItem(DeepBoardBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
 
-        Optional<SculkyGrowerRecipe> match = level.getRecipeManager()
-                .getRecipeFor(SculkyGrowerRecipe.Type.INSTANCE, inventory, level);
+        Optional<DeepBoardRecipe> match = level.getRecipeManager()
+                .getRecipeFor(DeepBoardRecipe.Type.INSTANCE, inventory, level);
 
         if(match.isPresent()) {
             entity.itemHandler.extractItem(0,1, false);
             entity.itemHandler.extractItem(1,1, false);
+            entity.itemHandler.extractItem(2,1, false);
+            entity.itemHandler.extractItem(3,1, false);
 
-            entity.itemHandler.setStackInSlot(2, new ItemStack(match.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(2).getCount() + 1));
+            entity.itemHandler.setStackInSlot(4, new ItemStack(match.get().getResultItem().getItem(),
+                    entity.itemHandler.getStackInSlot(4).getCount() + 1));
 
             entity.resetProgress();
         }

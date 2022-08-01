@@ -11,16 +11,16 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.SculkCatalystBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.parsa.edd.block.entity.BlockEntitesRegistry;
+import net.parsa.edd.block.entity.custom.DeepBoardBlockEntity;
 import net.parsa.edd.block.entity.custom.SculkyGrowerBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class SculkyGrower extends BaseEntityBlock {
-    public SculkyGrower(Properties p_49224_) {
+public class DeepBoard extends BaseEntityBlock {
+    public DeepBoard(Properties p_49224_) {
         super(p_49224_);
     }
 
@@ -33,8 +33,8 @@ public class SculkyGrower extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof SculkyGrowerBlockEntity) {
-                ((SculkyGrowerBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof DeepBoardBlockEntity) {
+                ((DeepBoardBlockEntity) blockEntity).drops();
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
@@ -44,8 +44,8 @@ public class SculkyGrower extends BaseEntityBlock {
                                  Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof SculkyGrowerBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)pPlayer), (SculkyGrowerBlockEntity)entity, pPos);
+            if(entity instanceof DeepBoardBlockEntity) {
+                NetworkHooks.openGui(((ServerPlayer)pPlayer), (DeepBoardBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -57,12 +57,12 @@ public class SculkyGrower extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return new SculkyGrowerBlockEntity(p_153215_, p_153216_);
+        return new DeepBoardBlockEntity(p_153215_, p_153216_);
     }
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, BlockEntitesRegistry.SCULKY_GROWER_BLOCK_ENTITY.get(),
-                SculkyGrowerBlockEntity::tick);
+        return createTickerHelper(pBlockEntityType, BlockEntitesRegistry.DEEP_BOARD_BLOCK_ENTITY.get(),
+                DeepBoardBlockEntity::tick);
     }
 }

@@ -7,15 +7,13 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.parsa.edd.EnhancedDeepDark;
-import net.parsa.edd.block.entity.custom.SculkyGrowerBlockEntity;
 
-public class SculkyGrowerScreen extends AbstractContainerScreen<SculkyGrowerMenu> {
+public class DeepBoardScreen extends AbstractContainerScreen<DeepBoardMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(EnhancedDeepDark.MODID, "textures/gui/sculk_grower_gui.png");
+            new ResourceLocation(EnhancedDeepDark.MODID, "textures/gui/deep_board_gui.png");
 
-    public SculkyGrowerScreen(SculkyGrowerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public DeepBoardScreen(DeepBoardMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 
@@ -29,7 +27,8 @@ public class SculkyGrowerScreen extends AbstractContainerScreen<SculkyGrowerMenu
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
         if(menu.isCrafting()) {
-            blit(pPoseStack, x + 47, y + 28, 176, 0, 80, menu.getScaledProgress());
+            blit(pPoseStack, x + 87, y + 14, 176, 0, 8, menu.getScaledProgress());
+            blit(pPoseStack, x + 49, y + 37, 183, 0, 17, menu.getScaledProgress());
         }
     }
 

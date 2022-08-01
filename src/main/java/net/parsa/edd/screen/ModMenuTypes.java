@@ -17,7 +17,8 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<SculkyGrowerMenu>> SCULKY_GROWER_MENU =
             registerMenuType(SculkyGrowerMenu::new, "sculky_grower_menu");
 
-
+    public static final RegistryObject<MenuType<DeepBoardMenu>> DEEP_BOARD_MENU =
+            registerMenuType(DeepBoardMenu::new, "deep_board_menu");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,
                                                                                                   String name) {

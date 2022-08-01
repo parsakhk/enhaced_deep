@@ -1,7 +1,6 @@
 package net.parsa.edd.screen;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -11,23 +10,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.parsa.edd.block.ModBlockRegistries;
+import net.parsa.edd.block.entity.custom.DeepBoardBlockEntity;
 import net.parsa.edd.block.entity.custom.SculkyGrowerBlockEntity;
 import net.parsa.edd.screen.slot.ModResultSlot;
-import org.jetbrains.annotations.Nullable;
 
-public class SculkyGrowerMenu extends AbstractContainerMenu {
-    private final SculkyGrowerBlockEntity blockEntity;
+public class DeepBoardMenu extends AbstractContainerMenu {
+    private final DeepBoardBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public SculkyGrowerMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
+    public DeepBoardMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
         this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public SculkyGrowerMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.SCULKY_GROWER_MENU.get(), pContainerId);
-        checkContainerSize(inv, 3);
-        blockEntity = ((SculkyGrowerBlockEntity) entity);
+    public DeepBoardMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(ModMenuTypes.DEEP_BOARD_MENU.get(), pContainerId);
+        checkContainerSize(inv, 5);
+        blockEntity = ((DeepBoardBlockEntity) entity);
         this.level = inv.player.level;
         this.data = data;
 
@@ -35,9 +34,11 @@ public class SculkyGrowerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 28, 17));
-            this.addSlot(new SlotItemHandler(handler, 1, 28, 55));
-            this.addSlot(new ModResultSlot(handler, 2, 136, 38));
+            this.addSlot(new SlotItemHandler(handler, 0, 113, 15));
+            this.addSlot(new SlotItemHandler(handler, 1, 113, 49));
+            this.addSlot(new SlotItemHandler(handler, 2, 47, 49));
+            this.addSlot(new SlotItemHandler(handler, 3, 47, 15));
+            this.addSlot(new ModResultSlot(handler, 4, 77, 44));
         });
 
 
@@ -71,7 +72,7 @@ public class SculkyGrowerMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 5;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -109,7 +110,7 @@ public class SculkyGrowerMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlockRegistries.SCULK_GROWER.get());
+                pPlayer, ModBlockRegistries.DEEP_BOARD.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "edd:block/deep_board"
+    }
+  }
+}

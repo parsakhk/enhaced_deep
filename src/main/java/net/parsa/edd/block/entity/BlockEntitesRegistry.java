@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.parsa.edd.EnhancedDeepDark;
 import net.parsa.edd.block.ModBlockRegistries;
+import net.parsa.edd.block.entity.custom.DeepBoardBlockEntity;
 import net.parsa.edd.block.entity.custom.SculkyGrowerBlockEntity;
 
 public class BlockEntitesRegistry {
@@ -17,6 +18,11 @@ public class BlockEntitesRegistry {
             BLOCK_ENTITIES.register("sculk_grower_block_entity", () ->
                     BlockEntityType.Builder.of(SculkyGrowerBlockEntity::new,
                             ModBlockRegistries.SCULK_GROWER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<DeepBoardBlockEntity>> DEEP_BOARD_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("deep_board_block_entity", () ->
+                    BlockEntityType.Builder.of(DeepBoardBlockEntity::new,
+                            ModBlockRegistries.DEEP_BOARD.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {
