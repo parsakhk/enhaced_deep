@@ -28,6 +28,7 @@ import net.parsa.edd.block.entity.BlockEntitesRegistry;
 import net.parsa.edd.item.ModItemRegistries;
 import net.parsa.edd.particle.ModParticles;
 import net.parsa.edd.recipe.ModRecipe;
+import net.parsa.edd.screen.DeepBoardMenu;
 import net.parsa.edd.screen.DeepBoardScreen;
 import net.parsa.edd.screen.ModMenuTypes;
 import net.parsa.edd.screen.SculkyGrowerScreen;

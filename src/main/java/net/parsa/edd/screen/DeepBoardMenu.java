@@ -1,9 +1,12 @@
 package net.parsa.edd.screen;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -11,50 +14,34 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.parsa.edd.block.ModBlockRegistries;
 import net.parsa.edd.block.entity.custom.DeepBoardBlockEntity;
-import net.parsa.edd.block.entity.custom.SculkyGrowerBlockEntity;
 import net.parsa.edd.screen.slot.ModResultSlot;
 
 public class DeepBoardMenu extends AbstractContainerMenu {
     private final DeepBoardBlockEntity blockEntity;
     private final Level level;
-    private final ContainerData data;
 
     public DeepBoardMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
     }
 
-    public DeepBoardMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public DeepBoardMenu(int pContainerId, Inventory inv, BlockEntity entity) {
         super(ModMenuTypes.DEEP_BOARD_MENU.get(), pContainerId);
         checkContainerSize(inv, 5);
         blockEntity = ((DeepBoardBlockEntity) entity);
         this.level = inv.player.level;
-        this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 113, 15));
-            this.addSlot(new SlotItemHandler(handler, 1, 113, 49));
-            this.addSlot(new SlotItemHandler(handler, 2, 47, 49));
-            this.addSlot(new SlotItemHandler(handler, 3, 47, 15));
-            this.addSlot(new ModResultSlot(handler, 4, 77, 44));
+            this.addSlot(new SlotItemHandler(handler, 0, 57, 15));
+            this.addSlot(new SlotItemHandler(handler, 1, 112, 15));
+            this.addSlot(new SlotItemHandler(handler, 2, 57, 49));
+            this.addSlot(new SlotItemHandler(handler, 3, 112, 49));
+            this.addSlot(new ModResultSlot(handler, 4, 81, 44));
         });
-
-
-        addDataSlots(data);
-    }
-    public boolean isCrafting() {
-        return data.get(0) > 0;
     }
 
-    public int getScaledProgress() {
-        int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);  // Max Progress
-        int progressArrowSize = 26; // This is the height in pixels of your arrow
-
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
-    }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.

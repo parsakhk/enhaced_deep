@@ -13,8 +13,6 @@ public class ModRecipe {
 
     public static final RegistryObject<RecipeSerializer<SculkyGrowerRecipe>> SCULKY_GROWER_SERIALIZER =
             SERIALIZERS.register("sculk_growing", () -> SculkyGrowerRecipe.Serializer.INSTANCE);
-    public static final RegistryObject<RecipeSerializer<DeepBoardRecipe>> DEEP_BOARD_SERIALIZER =
-            SERIALIZERS.register("deep_boarding", () -> DeepBoardRecipe.Serializer.INSTANCE);
 
 
     public static void register(IEventBus eventBus) {

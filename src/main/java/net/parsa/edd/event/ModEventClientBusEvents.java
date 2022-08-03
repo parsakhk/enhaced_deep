@@ -23,7 +23,7 @@ import net.parsa.edd.EnhancedDeepDark;
 import net.parsa.edd.block.ModBlockRegistries;
 import net.parsa.edd.particle.ModParticles;
 import net.parsa.edd.particle.custom.SculkPrisoners;
-import net.parsa.edd.recipe.DeepBoardRecipe;
+
 import net.parsa.edd.recipe.SculkyGrowerRecipe;
 
 import javax.annotation.Nonnull;
@@ -43,11 +43,6 @@ public class ModEventClientBusEvents {
         event.register(ForgeRegistries.Keys.RECIPE_TYPES, helper -> {
             helper.register(new ResourceLocation(EnhancedDeepDark.MODID, SculkyGrowerRecipe.Type.ID),
                     SculkyGrowerRecipe.Type.INSTANCE);
-        });
-
-        event.register(ForgeRegistries.Keys.RECIPE_TYPES, helper -> {
-            helper.register(new ResourceLocation(EnhancedDeepDark.MODID, DeepBoardRecipe.Type.ID),
-                    DeepBoardRecipe.Type.INSTANCE);
         });
     }
 }

@@ -17,7 +17,6 @@ import net.parsa.edd.block.custom.DeepBoard;
 import net.parsa.edd.block.custom.SculkyGrower;
 import net.parsa.edd.item.ModItemGroups;
 import net.parsa.edd.item.ModItemRegistries;
-import net.parsa.edd.item.SculkRemover;
 
 import java.util.function.Supplier;
 

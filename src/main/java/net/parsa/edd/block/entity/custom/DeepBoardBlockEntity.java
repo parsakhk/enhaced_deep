@@ -10,7 +10,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -23,18 +22,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.parsa.edd.block.entity.BlockEntitesRegistry;
-import net.parsa.edd.recipe.DeepBoardRecipe;
-import net.parsa.edd.recipe.SculkyGrowerRecipe;
+import net.parsa.edd.item.ModItemRegistries;
 import net.parsa.edd.screen.DeepBoardMenu;
-import net.parsa.edd.screen.SculkyGrowerMenu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 
 public class DeepBoardBlockEntity extends BlockEntity implements MenuProvider {
-
     private final ItemStackHandler itemHandler = new ItemStackHandler(5) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -43,44 +38,20 @@ public class DeepBoardBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    protected final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 242;
 
     public DeepBoardBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(BlockEntitesRegistry.DEEP_BOARD_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
-        this.data = new ContainerData() {
-            public int get(int index) {
-                switch (index) {
-                    case 0: return DeepBoardBlockEntity.this.progress;
-                    case 1: return DeepBoardBlockEntity.this.maxProgress;
-                    default: return 0;
-                }
-            }
-
-            public void set(int index, int value) {
-                switch(index) {
-                    case 0: DeepBoardBlockEntity.this.progress = value; break;
-                    case 1: DeepBoardBlockEntity.this.maxProgress = value; break;
-                }
-            }
-
-            public int getCount() {
-                return 2;
-            }
-        };
     }
 
-
     @Override
-    public Component getDisplayName() {
+    public net.minecraft.network.chat.Component getDisplayName() {
         return Component.literal("Deep Board");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
-        return new DeepBoardMenu(pContainerId, pInventory, this, this.data);
+        return new DeepBoardMenu(pContainerId, pInventory, this);
     }
 
     @Nonnull
@@ -108,7 +79,6 @@ public class DeepBoardBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-        tag.putInt("deep_board.progress", progress);
         super.saveAdditional(tag);
     }
 
@@ -116,7 +86,6 @@ public class DeepBoardBlockEntity extends BlockEntity implements MenuProvider {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("deep_board.progress");
     }
 
     public void drops() {
@@ -130,79 +99,31 @@ public class DeepBoardBlockEntity extends BlockEntity implements MenuProvider {
 
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DeepBoardBlockEntity pBlockEntity) {
-        if(hasRecipe(pBlockEntity)) {
-            pBlockEntity.progress++;
-            setChanged(pLevel, pPos, pState);
-            if(pBlockEntity.progress > pBlockEntity.maxProgress) {
-                craftItem(pBlockEntity);
-            }
-        } else {
-            pBlockEntity.resetProgress();
-            setChanged(pLevel, pPos, pState);
+        if(hasRecipe(pBlockEntity) && hasNotReachedStackLimit(pBlockEntity)) {
+            craftItem(pBlockEntity);
         }
-    }
-
-    private static boolean hasRecipe(DeepBoardBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        Optional<DeepBoardRecipe> match = level.getRecipeManager()
-                .getRecipeFor(DeepBoardRecipe.Type.INSTANCE, inventory, level);
-
-        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
-                && hasBowlInBowlSlot(entity) && hasSwordInSwordSlot(entity)
-                && hasBlockInBlockSlot(entity);
-    }
-
-    private static boolean hasBowlInBowlSlot(DeepBoardBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(0).getItem() == Items.BOWL;
-    }
-    private static boolean hasSwordInSwordSlot(DeepBoardBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(1).getItem() == Items.DIAMOND_SWORD ||
-                entity.itemHandler.getStackInSlot(1).getItem() == Items.GOLDEN_SWORD || entity.itemHandler.getStackInSlot(0).getItem() == Items.NETHERITE_SWORD ||
-                entity.itemHandler.getStackInSlot(1).getItem() == Items.IRON_SWORD;
-    }
-
-    private static boolean hasBlockInBlockSlot(DeepBoardBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(2).getItem() == Blocks.SCULK.asItem();
     }
 
     private static void craftItem(DeepBoardBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
+        entity.itemHandler.extractItem(0, 1, false);
+        entity.itemHandler.extractItem(1, 1, false);
+        entity.itemHandler.extractItem(2, 1, false);
+        entity.itemHandler.extractItem(3, 1, false);
 
-        Optional<DeepBoardRecipe> match = level.getRecipeManager()
-                .getRecipeFor(DeepBoardRecipe.Type.INSTANCE, inventory, level);
-
-        if(match.isPresent()) {
-            entity.itemHandler.extractItem(0,1, false);
-            entity.itemHandler.extractItem(1,1, false);
-            entity.itemHandler.extractItem(2,1, false);
-            entity.itemHandler.extractItem(3,1, false);
-
-            entity.itemHandler.setStackInSlot(4, new ItemStack(match.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(4).getCount() + 1));
-
-            entity.resetProgress();
-        }
+        entity.itemHandler.setStackInSlot(4, new ItemStack(ModItemRegistries.SCULK_SOUP.get(),
+                entity.itemHandler.getStackInSlot(4).getCount() + 1));
     }
 
-    private void resetProgress() {
-        this.progress = 0;
+    private static boolean hasRecipe(DeepBoardBlockEntity entity) {
+        boolean hasItemInSwordSlot = entity.itemHandler.getStackInSlot(3).getItem() == Items.IRON_SWORD;
+        boolean hasItemInSculkSlot = entity.itemHandler.getStackInSlot(2).getItem() == Blocks.SCULK.asItem();
+        boolean hasItemInBowlSlot = entity.itemHandler.getStackInSlot(1).getItem() == Items.BOWL;
+
+        return hasItemInSwordSlot && hasItemInSculkSlot && hasItemInBowlSlot;
     }
 
-    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
-        return inventory.getItem(3).getItem() == output.getItem() || inventory.getItem(3).isEmpty();
+    private static boolean hasNotReachedStackLimit(DeepBoardBlockEntity entity) {
+        return entity.itemHandler.getStackInSlot(4).getCount() < entity.itemHandler.getStackInSlot(4).getMaxStackSize();
     }
 
-    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
-        return inventory.getItem(3).getMaxStackSize() > inventory.getItem(3).getCount();
-    }
 }

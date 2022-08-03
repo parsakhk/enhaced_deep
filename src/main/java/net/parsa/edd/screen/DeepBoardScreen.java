@@ -26,10 +26,6 @@ public class DeepBoardScreen extends AbstractContainerScreen<DeepBoardMenu> {
         int y = (height - imageHeight) / 2;
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
-        if(menu.isCrafting()) {
-            blit(pPoseStack, x + 87, y + 14, 176, 0, 8, menu.getScaledProgress());
-            blit(pPoseStack, x + 49, y + 37, 183, 0, 17, menu.getScaledProgress());
-        }
     }
 
     @Override
@@ -38,4 +34,5 @@ public class DeepBoardScreen extends AbstractContainerScreen<DeepBoardMenu> {
         super.render(pPoseStack, mouseX, mouseY, delta);
         renderTooltip(pPoseStack, mouseX, mouseY);
     }
+
 }
