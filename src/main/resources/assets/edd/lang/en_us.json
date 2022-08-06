@@ -2,8 +2,14 @@
   "block.edd.sculk_mushroom": "Sculk Mushroom",
   "block.edd.sculk_grower": "Sculk Grower",
   "block.edd.deep_board": "Deep Dark Special board",
+
+  "block.edd.sculky_iron_ore": "Sculky Iron Ore",
+  "block.edd.sculky_gold_ore": "Sculky Gold Ore",
+  "block.edd.sculky_diamond_ore": "Sculky Diamond Ore",
+
   "item.edd.sculk_remover": "Sculk Remover",
   "item.edd.sculk_soup": "Sculk Soup",
+  "item.edd.sculky_enderman_spawn_egg": "Sculky Enderman Spawn Egg",
 
 
 

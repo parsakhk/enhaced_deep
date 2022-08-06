@@ -1,0 +1,11 @@
+{
+  "type": "edd:sculk_growing",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ore"
+    }
+  ],
+  "output": {
+    "item": "edd:sculky_iron_ore"
+  }
+}

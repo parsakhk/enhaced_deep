@@ -6,6 +6,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,6 +28,10 @@ public class ModBlockRegistries {
     public static final RegistryObject<Block> SCULK_MUSHROOM = registerBlock("sculk_mushroom", () -> new FlowerBlock(MobEffects.DARKNESS, 3, BlockBehaviour.Properties.copy(Blocks.DANDELION).noOcclusion().noCollission()), ModItemGroups.EDD_TAB);
     public static final RegistryObject<Block> SCULK_GROWER = registerBlock("sculk_grower", () -> new SculkyGrower(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)), ModItemGroups.EDD_TAB);
     public static final RegistryObject<Block> DEEP_BOARD = registerBlock("deep_board", () -> new DeepBoard(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)), ModItemGroups.EDD_TAB);
+
+    public static final RegistryObject<Block> SCULKY_DIAMOND_ORE = registerBlock("sculky_diamond_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()), ModItemGroups.EDD_TAB);
+    public static final RegistryObject<Block> SCULKY_GOLD_ORE = registerBlock("sculky_gold_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()), ModItemGroups.EDD_TAB);
+    public static final RegistryObject<Block> SCULKY_IRON_ORE = registerBlock("sculky_iron_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).requiresCorrectToolForDrops()), ModItemGroups.EDD_TAB);
 
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

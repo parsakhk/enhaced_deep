@@ -1,0 +1,9 @@
+// 1.19	2022-08-04T14:22:23.3545214	Block States: edd
+68b7e37f401c3672a4115772de04f5f6b0c27d15 assets/edd/blockstates/sculky_diamond_ore.json
+e3ef5f981466739c654188cb3cf5f425d775d33f assets/edd/blockstates/sculky_gold_ore.json
+2c12d739ca80a755bbb0d0a7fd55ddfc44f38b69 assets/edd/blockstates/sculky_iron_ore.json
+2d080e41db31f61adf5935a36373b49c7d9ee8d4 assets/edd/blockstates/sculk_mushroom.json
+8c3976b4446928f02acfb943d0b5e0b60c0db54a assets/edd/models/block/sculky_diamond_ore.json
+aa2ddc21fefbfe81815234df57d6906942123af2 assets/edd/models/block/sculky_gold_ore.json
+5a4cc9e51f0267e1e4caf882c5a7bb3baef02198 assets/edd/models/block/sculky_iron_ore.json
+fe09d9c31d48ce15beaaaf61dd48b4c1a6a8110a assets/edd/models/block/sculk_mushroom.json

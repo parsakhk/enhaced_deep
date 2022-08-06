@@ -1,0 +1,11 @@
+{
+  "type": "edd:sculk_growing",
+  "ingredients": [
+    {
+      "item": "edd:sculky_diamond_ore"
+    }
+  ],
+  "output": {
+    "item": "minecraft:deepslate_diamond_ore"
+  }
+}

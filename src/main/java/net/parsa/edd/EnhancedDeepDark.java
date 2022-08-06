@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -25,6 +26,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.parsa.edd.block.ModBlockRegistries;
 import net.parsa.edd.block.entity.BlockEntitesRegistry;
+import net.parsa.edd.entity.ModEntityTypes;
+import net.parsa.edd.entity.client.sculk_enderman.SculkyEndermanRenderer;
 import net.parsa.edd.item.ModItemRegistries;
 import net.parsa.edd.particle.ModParticles;
 import net.parsa.edd.recipe.ModRecipe;
@@ -33,6 +36,7 @@ import net.parsa.edd.screen.DeepBoardScreen;
 import net.parsa.edd.screen.ModMenuTypes;
 import net.parsa.edd.screen.SculkyGrowerScreen;
 import org.slf4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(EnhancedDeepDark.MODID)
@@ -58,6 +62,10 @@ public class EnhancedDeepDark
         ModMenuTypes.register(modEventBus);
         BlockEntitesRegistry.register(modEventBus);
         ModRecipe.register(modEventBus);
+        ModEntityTypes.register(modEventBus);
+
+
+        GeckoLib.initialize();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -78,6 +86,9 @@ public class EnhancedDeepDark
         MenuScreens.register(ModMenuTypes.SCULKY_GROWER_MENU.get(), SculkyGrowerScreen::new);
         MenuScreens.register(ModMenuTypes.DEEP_BOARD_MENU.get(), DeepBoardScreen::new);
 
+
+
+        EntityRenderers.register(ModEntityTypes.SCULK_ENDERMAN.get(), SculkyEndermanRenderer::new);
     }
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)

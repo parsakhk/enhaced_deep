@@ -1,0 +1,12 @@
+{
+  "type": "edd:sculk_growing",
+  "ingredients": [
+    {
+      "item": "minecraft:stone"
+    }
+  ],
+  "output": {
+    "count": 2,
+    "item": "minecraft:sculk"
+  }
+}
